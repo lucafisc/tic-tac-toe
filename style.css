@@ -43,6 +43,7 @@
     --tic-size: 50px;
     --color-1: #ff1999;
     --color-2: #490ecb;
+    --light-gray: #979797;
 }
 
 /* content */
@@ -69,12 +70,26 @@
     animation-delay: 0.4s;
 }
  
-
 @keyframes jump {
     0%   { transform: translateY(0); }
     30%  { transform: translateY(-15px); }
     50%  { transform: translateY(0); }
     100% { transform: translateY(0); }
+}
+
+.title-game-over {
+    animation: game-over;
+    animation-duration: 0.2s;
+    animation-iteration-count: 4;
+}
+
+@keyframes game-over {
+    0%   { transform: scale(1); 
+    color: black;}
+    50%  { transform: scale(1.2); 
+    color: #ff1999;}
+    100% { transform: scale(1); 
+    color: black;}
 }
 
 .title-container {
@@ -114,8 +129,8 @@ font-family: var(--default-font);
     font-size: var(--tic-size);
     font-weight: bold;
     color: var(--color-1);
+}
 
-;}
-
-.marked::after {
+.grayed {
+    color: var(--light-gray);
 }
