@@ -23,15 +23,38 @@ class ai extends player {
     super(name, marker, score)
     this.level = level
   }
-  setLevel(level) {
+  set newLevel(level) {
     this.level = level
   }
 
   randomMove() {
+    do {
+    let i = Math.floor(Math.random() * 9);
+    }
+    while (gameboard.getBoard()[i] !== "")
+    return i;
   }
 
   bestMove() {
 
+  }
+
+  get Move() {
+    if (level === 1) {
+      return randomMove()
+    }
+    else if (level === 3) {
+      return bestMove()
+    }
+    else {
+      let x = Math.floor(Math.random() * 2);
+      if (x == 0) {
+        return randomMove()
+      }
+      else {
+        return bestMove()
+      }
+    }
   }
 }
 
