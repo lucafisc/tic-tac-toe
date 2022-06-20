@@ -1,8 +1,42 @@
-const playerFactory = (name, marker, score) => {
-  return { name, marker, score };
-};
-const human = playerFactory("human", "x", 0);
-const cpu = playerFactory("cpu", "o", 0);
+class player {
+  constructor(name, marker, score) {
+    this.name = name
+    this.marker = marker
+    this.score = score
+  }
+  addPoint() {
+    this.score++
+  }
+  getName() {
+    return  this.name
+  }
+  getMarker() {
+    return this.marker
+  }
+  getScore() {
+    return this.score
+  }
+}
+
+class ai extends player {
+  constructor(name, marker, score, level) {
+    super(name, marker, score)
+    this.level = level
+  }
+  setLevel(level) {
+    this.level = level
+  }
+
+  randomMove() {
+  }
+
+  bestMove() {
+
+  }
+}
+
+const human = new player("human", "x", 0);
+const cpu = new ai("cpu", "o", 0, 1);
 
 const gameboard = (() => {
   let _board = ["", "", "", "", "", "", "", "", ""];
@@ -17,7 +51,7 @@ const gameboard = (() => {
         gameControl.isThereWinner()
       )
         return; // || gameControl.whoseTurn() === cpu
-      _render(this, gameControl.whoseTurn().marker);
+      _render(this, gameControl.whoseTurn().getMarker());
       gameControl.gameRound();
     });
   }
@@ -81,10 +115,10 @@ const gameControl = (() => {
   }
 
   const _updatePoints = (winner) => {
-    winner === human ? human.score++ : cpu.score++;
+    winner === human ? human.addPoint() : cpu.addPoint();
 
-    _playerScore.textContent = human.score;
-    _cpuScore.textContent = cpu.score;
+    _playerScore.textContent = human.getScore();
+    _cpuScore.textContent = cpu.getScore();
   }
 
   const _checkWin = (marker, array, winCondition) => {
@@ -121,7 +155,7 @@ const gameControl = (() => {
   }
 
   const gameRound = () => {
-    _checkWin(whoseTurn().marker, gameboard.getBoard(), _winConditions);
+    _checkWin(whoseTurn().getMarker(), gameboard.getBoard(), _winConditions);
     if (isThereWinner()) {
         _updatePoints(_currentPlayer);
       _gameOver();
@@ -157,7 +191,7 @@ const title = (() => {
   const animateTurn = (currentPlayer) => {
     _resetAnimation(_animationClass);
     _resetAnimation("title-game-over");
-    currentPlayer.name === "human"
+    currentPlayer.getName() === "human"
       ? (_animationClass = "title-animate")
       : (_animationClass = "title-reverse");
     for (let i = 0; i < _titles.length; i++) {
