@@ -22,12 +22,12 @@ const gameboard = (() => {
     });
   }
 
-  function _render(cell, marker) {
+  const _render = (cell, marker) =>{
     cell.classList.add(marker);
     _board[cell.id] = marker;
   }
 
-  function endRound(winnerArray) {
+  const endRound = (winnerArray) =>{
     for (let i = 0; i < _cells.length; i++) {
       _cells[i].classList.add("new-round");
       if (!winnerArray.includes(i)) {
@@ -43,7 +43,7 @@ const gameboard = (() => {
     _board = ["", "", "", "", "", "", "", "", ""];
   }
 
-  function getBoard() {
+  const getBoard = () => {
     return _board;
   }
 
@@ -72,7 +72,7 @@ const gameControl = (() => {
     [2, 4, 6],
   ];
 
-  function _switchPlayer() {
+  const _switchPlayer = () => {
     _currentPlayer === human
       ? (_currentPlayer = cpu)
       : (_currentPlayer = human);
@@ -80,14 +80,14 @@ const gameControl = (() => {
     _boardContainer.classList.toggle("cpu");
   }
 
-  function _updatePoints(winner) {
+  const _updatePoints = (winner) => {
     winner === human ? human.score++ : cpu.score++;
 
     _playerScore.textContent = human.score;
     _cpuScore.textContent = cpu.score;
   }
 
-  function _checkWin(marker, array, winCondition) {
+  const _checkWin = (marker, array, winCondition) => {
     //check index of markers
     _indexes = [];
     for (let i = 0; i < array.length; i++) {
@@ -104,11 +104,11 @@ const gameControl = (() => {
     }
   }
 
-  function _checkDraw(array) {
+  const _checkDraw = (array) => {
     return !array.includes("");
   }
 
-  function _gameOver() {
+  const _gameOver = () => {
     title.animateGameOver();
     gameboard.endRound(_winnerArray);
     _indexes = [];
@@ -116,11 +116,11 @@ const gameControl = (() => {
     _winner = false;
   }
 
-  function whoseTurn() {
+  const whoseTurn = () => {
     return _currentPlayer;
   }
 
-  function gameRound() {
+  const gameRound = () => {
     _checkWin(whoseTurn().marker, gameboard.getBoard(), _winConditions);
     if (isThereWinner()) {
         _updatePoints(_currentPlayer);
@@ -133,7 +133,7 @@ const gameControl = (() => {
     }
   }
 
-  function isThereWinner() {
+  const isThereWinner = () => {
     return _winner;
   }
 
@@ -148,13 +148,13 @@ const title = (() => {
   const _titles = document.querySelectorAll(".title");
   let _animationClass;
 
-  function _resetAnimation(prop) {
+  const _resetAnimation = (prop) => {
     for (let i = 0; i < _titles.length; i++) {
       _titles[i].classList.remove(prop);
     }
   }
 
-  function animateTurn(currentPlayer) {
+  const animateTurn = (currentPlayer) => {
     _resetAnimation(_animationClass);
     _resetAnimation("title-game-over");
     currentPlayer.name === "human"
@@ -166,7 +166,7 @@ const title = (() => {
       _titles[i].classList.add(_animationClass);
     }
   }
-  function animateGameOver() {
+  const animateGameOver = () => {
     _resetAnimation(_animationClass);
     for (let i = 0; i < _titles.length; i++) {
       _titles[i].classList.remove("title-game-over");
