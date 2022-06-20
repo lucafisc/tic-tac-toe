@@ -7,13 +7,13 @@ class player {
   addPoint() {
     this.score++
   }
-  getName() {
+  get myName() {
     return  this.name
   }
-  getMarker() {
+  get myMarker() {
     return this.marker
   }
-  getScore() {
+  get currentScore() {
     return this.score
   }
 }
@@ -51,7 +51,7 @@ const gameboard = (() => {
         gameControl.isThereWinner()
       )
         return; // || gameControl.whoseTurn() === cpu
-      _render(this, gameControl.whoseTurn().getMarker());
+      _render(this, gameControl.whoseTurn().myMarker);
       gameControl.gameRound();
     });
   }
@@ -117,8 +117,8 @@ const gameControl = (() => {
   const _updatePoints = (winner) => {
     winner === human ? human.addPoint() : cpu.addPoint();
 
-    _playerScore.textContent = human.getScore();
-    _cpuScore.textContent = cpu.getScore();
+    _playerScore.textContent = human.currentScore;
+    _cpuScore.textContent = cpu.currentScore;
   }
 
   const _checkWin = (marker, array, winCondition) => {
@@ -155,7 +155,7 @@ const gameControl = (() => {
   }
 
   const gameRound = () => {
-    _checkWin(whoseTurn().getMarker(), gameboard.getBoard(), _winConditions);
+    _checkWin(whoseTurn().myMarker, gameboard.getBoard(), _winConditions);
     if (isThereWinner()) {
         _updatePoints(_currentPlayer);
       _gameOver();
@@ -191,7 +191,7 @@ const title = (() => {
   const animateTurn = (currentPlayer) => {
     _resetAnimation(_animationClass);
     _resetAnimation("title-game-over");
-    currentPlayer.getName() === "human"
+    currentPlayer.myName === "human"
       ? (_animationClass = "title-animate")
       : (_animationClass = "title-reverse");
     for (let i = 0; i < _titles.length; i++) {
