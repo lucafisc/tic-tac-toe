@@ -5,14 +5,18 @@ const human = playerFactory("human", "x", 0);
 const cpu = playerFactory("cpu", "o", 0);
 
 const gameboard = (() => {
-  let board = ["", "", "", "", "", "", "", "", ""];
+  let _board = ["", "", "", "", "", "", "", "", ""];
   const _cells = document.querySelectorAll(".cell");
 
   //event listener for cells
   for (let cell of _cells) {
     cell.addEventListener("click", function (e) {
-
-      if (this.classList.contains("x") || this.classList.contains("o") || gameControl.isThereWinner()) return; // || gameControl.whoseTurn() === cpu
+      if (
+        this.classList.contains("x") ||
+        this.classList.contains("o") ||
+        gameControl.isThereWinner()
+      )
+        return; // || gameControl.whoseTurn() === cpu
       _render(this, gameControl.whoseTurn().marker);
       gameControl.gameRound();
     });
@@ -20,50 +24,43 @@ const gameboard = (() => {
 
   function _render(cell, marker) {
     cell.classList.add(marker);
-    console.log(cell.id);
-    console.log(marker);
-    board[cell.id] = marker;
-    console.log(board);
+    _board[cell.id] = marker;
   }
 
-  function grayOut(winnerArray) {
+  function endRound(winnerArray) {
     for (let i = 0; i < _cells.length; i++) {
-        _cells[i].classList.add("new-round");
+      _cells[i].classList.add("new-round");
       if (!winnerArray.includes(i)) {
         _cells[i].classList.add("grayed");
       }
     }
-    setTimeout(function(){
-        for (let i = 0; i < _cells.length; i++)  {
-            _cells[i].classList.remove("new-round");
-            _cells[i].classList.remove("grayed");
-            _cells[i].classList.remove("x");
-            _cells[i].classList.remove("o");
-        }
-},3000);
+    setTimeout(function () {
+      for (let i = 0; i < _cells.length; i++) {
+        _cells[i].classList.remove("new-round", "grayed", "x", "o");
+      }
+    }, 3000);
 
-board = ["", "", "", "", "", "", "", "", ""];
+    _board = ["", "", "", "", "", "", "", "", ""];
   }
 
+  function getBoard() {
+    return _board;
+  }
 
   return {
-    board: board,
-    grayOut: grayOut,
+    getBoard: getBoard,
+    endRound: endRound,
   };
 })();
 
 const gameControl = (() => {
-  let indexes = [];
-  let winnerArray;
+  let _indexes = [];
+  let _winnerArray;
   let _currentPlayer = human;
-  let _isWinner = false;
-  let _boardContainer = document.querySelector(".board");
-  let _playerPoints = 0;
-  let _cpuPoints = 0;
-  let _playerScore = document.querySelector('[data-index="human"]');
-  let _cpuScore = document.querySelector('[data-index="cpu"]');
-
-
+  let _winner = false;
+  const _boardContainer = document.querySelector(".board");
+  const _playerScore = document.querySelector('[data-index="human"]');
+  const _cpuScore = document.querySelector('[data-index="cpu"]');
   const _winConditions = [
     [0, 1, 2],
     [3, 4, 5],
@@ -84,39 +81,39 @@ const gameControl = (() => {
   }
 
   function _updatePoints(winner) {
-    winner === human
-      ? _playerPoints++
-      : _cpuPoints++;
-    
-      _playerScore.textContent = _playerPoints;
-      _cpuScore.textContent = _cpuPoints;
+    winner === human ? human.score++ : cpu.score++;
+
+    _playerScore.textContent = human.score;
+    _cpuScore.textContent = cpu.score;
   }
 
   function _checkWin(marker, array, winCondition) {
-    console.log(array);
-
     //check index of markers
-    indexes = [];
+    _indexes = [];
     for (let i = 0; i < array.length; i++) {
       if (array[i] === marker) {
-        indexes.push(i);
+        _indexes.push(i);
       }
     }
     //check if matches winner array
     for (let i = 0; i < winCondition.length; i++) {
-      if (winCondition[i].every((j) => indexes.includes(j))) {
-        _isWinner = true;
-        winnerArray = winCondition[i];
+      if (winCondition[i].every((j) => _indexes.includes(j))) {
+        _winnerArray = winCondition[i];
+        _winner = true;
       }
     }
   }
 
-  function _gameOver() {
-      _isWinner = false;
-indexes = [];
-winnerArray = [];
-gameboard.board = ["", "", "", "", "", "", "", "", ""];
+  function _checkDraw(array) {
+    return !array.includes("");
+  }
 
+  function _gameOver() {
+    title.animateGameOver();
+    gameboard.endRound(_winnerArray);
+    _indexes = [];
+    _winnerArray = [];
+    _winner = false;
   }
 
   function whoseTurn() {
@@ -124,12 +121,12 @@ gameboard.board = ["", "", "", "", "", "", "", "", ""];
   }
 
   function gameRound() {
-    _checkWin(whoseTurn().marker, gameboard.board, _winConditions)
-    if (_isWinner) {
-      title.animateGameOver();
-      gameboard.grayOut(winnerArray);
-      _updatePoints(_currentPlayer);
+    _checkWin(whoseTurn().marker, gameboard.getBoard(), _winConditions);
+    if (isThereWinner()) {
+        _updatePoints(_currentPlayer);
       _gameOver();
+    } else if (_checkDraw(gameboard.getBoard())) {
+        _gameOver();
     } else {
       title.animateTurn(_currentPlayer);
       _switchPlayer();
@@ -137,8 +134,9 @@ gameboard.board = ["", "", "", "", "", "", "", "", ""];
   }
 
   function isThereWinner() {
-      return _isWinner;
+    return _winner;
   }
+
   return {
     gameRound: gameRound,
     whoseTurn: whoseTurn,
@@ -150,14 +148,15 @@ const title = (() => {
   const _titles = document.querySelectorAll(".title");
   let _animationClass;
 
-  function _resetAnimation() {
+  function _resetAnimation(prop) {
     for (let i = 0; i < _titles.length; i++) {
-      _titles[i].classList.remove(_animationClass);
+      _titles[i].classList.remove(prop);
     }
   }
 
   function animateTurn(currentPlayer) {
-    _resetAnimation();
+    _resetAnimation(_animationClass);
+    _resetAnimation("title-game-over");
     currentPlayer.name === "human"
       ? (_animationClass = "title-animate")
       : (_animationClass = "title-reverse");
@@ -168,11 +167,12 @@ const title = (() => {
     }
   }
   function animateGameOver() {
-    _resetAnimation();
+    _resetAnimation(_animationClass);
     for (let i = 0; i < _titles.length; i++) {
       _titles[i].classList.remove("title-game-over");
       _titles[i].offsetWidth;
       _titles[i].classList.add("title-game-over");
+      _titles[i].offsetWidth;
     }
   }
 
@@ -181,4 +181,3 @@ const title = (() => {
     animateGameOver: animateGameOver,
   };
 })();
-
