@@ -1,52 +1,36 @@
-/* Manifont Grotesk bold italic */
-@font-face {
-    font-family: "Manifont Grotesk";
-    src: url('./manifont-grotesk.webfont/manifont-grotesk_bold-italic.eot');
-    font-weight: bold;
-    font-style: italic;
-  }
-  
-/* Manifont Grotesk bold */
-@font-face {
-    font-family: "Manifont Grotesk";
-    src: url('./manifont-grotesk.webfont/manifont-grotesk_bold.eot');
-    font-weight: bold;
-    font-style: normal;
-  }
-  
- /* Manifont Grotesk book dot */
-@font-face {
-    font-family: "Manifont Grotesk";
-    src: url('./manifont-grotesk.webfont/manifont-grotesk_book-dot.eot');
-    font-weight: normal;
-    font-style: dot;
-  }
-  
-/* Manifont Grotesk book italic */
-@font-face {
-    font-family: "Manifont Grotesk";
-    src: url('./manifont-grotesk.webfont/manifont-grotesk_book-italic.eot');
-    font-weight: normal;
-    font-style: italic;
-  }
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300&display=swap');
 
-/* Manifont Grotesk book */
 @font-face {
-    font-family: "Manifont Grotesk";
-    src: url('./manifont-grotesk.webfont/manifont-grotesk_book.eot');
+    font-family: "Tiny 5x3";
+    src: url('./tinyfonts/TINY5x3-120.woff');
     font-weight: normal;
     font-style: normal;
-  }
+}
 
 :root {
-    --default-font: "Manifont Grotesk", Helvetica, sans-serif;
-    --tic-size: 50px;
-    --color-1: #ff1999;
-    --color-2: #490ecb;
-    --light-gray: #979797;
+    --default-font: 'Roboto Mono', monospace;
+    --tic-size: 80px;
+    --color-1: #f8ff6e;
+    --color-2: #d989f8;
+    --light-gray: #cccccc;
+    --background: #dcd9d2;
+    --text-color: #1a1a1a;
+    --border-board: 1px solid black;
+    --font-awesome: "Font Awesome 5 Free";
+
 }
 
 /* content */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--background);
+}
+
 .content {
     display: flex;
     flex-direction: column;
@@ -55,54 +39,103 @@
 
 }
 
-/* title */
-.title-animate,
-.title-reverse {
-  animation: jump;
-  animation-duration: 0.6s;
+/* title animations */
+.title-animate {
+    animation: jump1;
+    animation-duration: 0.45s;
 }
+
+.title-reverse {
+    animation: jump2;
+    animation-duration: 0.45s;
+}
+
 .title-animate:nth-child(2),
 .title-reverse:nth-child(2) {
-    animation-delay: 0.2s;
+    animation-delay: 0.15s;
 }
+
 .title-animate:nth-child(3),
 .title-reverse:nth-child(1) {
-    animation-delay: 0.4s;
+    animation-delay: 0.3s;
 }
- 
-@keyframes jump {
-    0%   { transform: translateY(0); }
-    30%  { transform: translateY(-15px); }
-    50%  { transform: translateY(0); }
-    100% { transform: translateY(0); }
+
+@keyframes jump1 {
+    0% {
+        transform: translateY(0);
+    }
+
+    30% {
+        transform: translateY(-15px);
+        color: var(--color-1);
+    }
+
+    50% {
+        transform: translateY(0);
+    }
+
+    100% {
+        transform: translateY(0);
+    }
+}
+
+@keyframes jump2 {
+    0% {
+        transform: translateY(0);
+    }
+
+    30% {
+        transform: translateY(-15px);
+        color: var(--color-2);
+    }
+
+    50% {
+        transform: translateY(0);
+    }
+
+    100% {
+        transform: translateY(0);
+    }
 }
 
 .title-game-over {
     animation: game-over;
-    animation-duration: 0.2s;
+    animation-duration: 0.3s;
     animation-iteration-count: 4;
 }
 
 @keyframes game-over {
-    0%   { transform: scale(1); 
-    color: black;}
-    50%  { transform: scale(1.2); 
-    color: #ff1999;}
-    100% { transform: scale(1); 
-    color: black;}
+    0% {
+        transform: scale(1);
+        color: black;
+    }
+
+    50% {
+        transform: scale(1.1);
+        color: #f8ff6e;
+    }
+
+    100% {
+        transform: scale(1);
+        color: black;
+    }
 }
+
+/* title */
 
 .title-container {
     display: flex;
-    gap: 10px;
     justify-content: center;
+    column-gap: 20px;
+    margin: 20px 0px;
 }
 
 h1 {
-    font-family: "Manifont Grotesk";
+    font-family: "Tiny 5x3";
     font-weight: bold;
     font-style: normal;
-    font-size: 30px;
+    font-size: 70px;
+    color: var(--text-color);
 }
 
 /* board */
@@ -110,27 +143,148 @@ h1 {
     display: grid;
     grid-template-columns: 100px 100px 100px;
     grid-template-rows: 100px 100px 100px;
+
 }
 
 .cell {
-    background-color: rgb(231, 250, 215);
-    border: 1px solid black;
+    border-bottom: var(--border-board);
+    border-right: var(--border-board);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    font-family: var(--font-awesome);
+    font-weight: 900;
 }
-.marked {
-transform: scale(1);
-background-color: aqua;
-height: 100%;
-width: 100%;
-display: flex;
-justify-content: center;
-align-items: center;
 
-font-family: var(--default-font);
+.cell:last-child,
+.cell:nth-last-child(2),
+.cell:nth-last-child(3) {
+    border-bottom: none;
+}
+
+.cell:last-child,
+.cell:nth-child(3),
+.cell:nth-child(6) {
+    border-right: none;
+}
+
+
+.cell.x,
+.cell.o {
+    cursor: not-allowed;
+}
+
+.x::after,
+.o::after,
+.cell:not(.x):not(.o):hover::after {
     font-size: var(--tic-size);
-    font-weight: bold;
+}
+
+.x::after,
+.o::after {
+    -webkit-animation: scale-in-center .5s cubic-bezier(.25, .46, .45, .94) both;
+    animation: scale-in-center .5s cubic-bezier(.25, .46, .45, .94) both
+}
+
+.x::after {
+    content: "\58";
     color: var(--color-1);
 }
 
-.grayed {
+.o::after {
+    content: "\f111";
+    color: var(--color-2);
+}
+
+.board.human .cell:not(.x):not(.o):hover::after {
+    content: "\58";
     color: var(--light-gray);
+}
+
+.board.cpu .cell:not(.x):not(.o):hover::after {
+    content: "\f111";
+    color: var(--light-gray);
+}
+
+.x.grayed::after,
+.o.grayed::after {
+    color: var(--light-gray) !important;
+
+}
+
+@-webkit-keyframes scale-in-center {
+    0% {
+        -webkit-transform: scale(0);
+        transform: scale(0);
+        opacity: 1
+    }
+
+    100% {
+        -webkit-transform: scale(1);
+        transform: scale(1);
+        opacity: 1
+    }
+}
+
+/* new round animations */
+.new-round::after {
+    -webkit-animation: scale-out-center 0.5s cubic-bezier(0.550, 0.085, 0.680, 0.530) 2s both;
+	        animation: scale-out-center 0.5s cubic-bezier(0.550, 0.085, 0.680, 0.530) 2s both;
+}
+
+@-webkit-keyframes scale-out-center {
+    0% {
+      -webkit-transform: scale(1);
+              transform: scale(1);
+      opacity: 1;
+    }
+    100% {
+      -webkit-transform: scale(0);
+              transform: scale(0);
+      opacity: 1;
+    }
+  }
+  @keyframes scale-out-center {
+    0% {
+      -webkit-transform: scale(1);
+              transform: scale(1);
+      opacity: 1;
+    }
+    100% {
+      -webkit-transform: scale(0);
+              transform: scale(0);
+      opacity: 1;
+    }
+  }
+
+/* scores */
+
+.scores {
+    margin-top: 40px;
+    width: 100%;
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    align-items: baseline;
+}
+
+.score {
+    font-family: var(--default-font);
+    font-size: 50px;
+}
+
+.human-icon,
+.cpu-icon {
+    font-family: var(--font-awesome);
+    font-weight: 900;
+    font-size: 50px;
+}
+
+.human-icon::after {
+    content: "\f118";
+}
+
+.cpu-icon::after {
+    content: "\f544";
 }

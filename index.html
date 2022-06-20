@@ -5,20 +5,21 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="normalize.css">
+    <!-- <link rel="stylesheet" href="normalize.css"> -->
     <link rel="stylesheet" href="style.css">
     <script src="script.js" defer></script>
+    <script src="https://kit.fontawesome.com/7ed8591ee9.js" crossorigin="anonymous"></script>
     <title>tic tac toe</title>
 </head>
 
 <body>
     <div class="content">
     <div class="title-container">
-        <h1 class="title">tic</h1>
-        <h1 class="title">tac</h1>
-        <h1 class="title">toe</h1>
+        <h1 class="title">TIC</h1>
+        <h1 class="title">TAC</h1>
+        <h1 class="title">TOE</h1>
     </div>
-    <div class="board">
+    <div class="board human">
         <div id="0" class="cell"></div>
         <div id="1" class="cell"></div>
         <div id="2" class="cell"></div>
@@ -28,6 +29,13 @@
         <div id="6" class="cell"></div>
         <div id="7" class="cell"></div>
         <div id="8" class="cell"></div>
+    </div>
+    <div class="scores">
+        <div class="human-icon"></div>
+        <div class="score" data-index="human">0</div>
+        <div class="score">:</div>
+        <div class="score" data-index="cpu">0</div>
+        <div class="cpu-icon"></div>
     </div>
 </div>
 </body>
