@@ -39,6 +39,10 @@ body {
 
 }
 
+.hidden {
+    display: none !important;
+}
+
 /* title animations */
 .title-animate {
     animation: jump1;
@@ -137,6 +141,20 @@ h1 {
     font-size: 70px;
     color: var(--text-color);
 }
+/* menu */
+.menu {
+    display: grid;
+    grid-template-columns: 300px;
+    grid-template-rows: 100px 100px 100px;
+}
+
+.row {
+    border-right: none !important;
+}
+
+.row:last-child {
+    border-bottom: none;
+}
 
 /* board */
 .board {
@@ -146,7 +164,9 @@ h1 {
 
 }
 
-.cell {
+
+.cell,
+.row {
     border-bottom: var(--border-board);
     border-right: var(--border-board);
     display: flex;
