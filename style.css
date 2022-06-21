@@ -123,12 +123,36 @@ body {
 
 /* title */
 
+header {
+    /* height: 50px; */
+    position: relative;
+    height: 100px;
+}
+
 .title-container {
     display: flex;
     justify-content: center;
     column-gap: 20px;
     margin: 20px 0px;
+    position: absolute;
+    top: 140px;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
 }
+
+.title-move-up {
+    -webkit-animation: move-up 0.5s cubic-bezier(0.550, 0.085, 0.680, 0.530) 0.5s both;
+    animation: move-up 0.5s cubic-bezier(0.550, 0.085, 0.680, 0.530) 0.5s both;
+}
+@keyframes move-up {
+    0% {
+        top: 140px;
+    }
+    100% {
+        top: 40px;
+    }
+  }
 
 h1 {
     font-family: "Tiny 5x3";
@@ -143,10 +167,51 @@ h1 {
     display: grid;
     grid-template-columns: 100px 100px 100px;
     grid-template-rows: 100px 100px 100px;
-
 }
 
-.cell {
+.choose-mode {
+    font-size: 40px;
+}
+.choose-mode:nth-child(1),
+.choose-mode:nth-child(2),
+.choose-mode:nth-child(3) {
+    cursor: default;
+}
+
+.choose-mode:nth-child(4),
+.choose-mode:nth-child(5),
+.choose-mode:nth-child(7),
+.choose-mode:nth-child(8) {
+    font-family: var(--default-font);
+}
+
+.choose-mode:nth-child(4)::after,
+.choose-mode:nth-child(7)::after {
+    content: "V";   
+}
+
+.choose-mode:nth-child(5)::after,
+.choose-mode:nth-child(8)::after {
+    content: "S";   
+}
+
+.choose-mode:nth-child(6)::after {
+    content: "\f118";
+}
+
+.choose-mode:nth-child(9)::after {
+    content: "\f544";
+}
+
+.mode-animate::after {
+    -webkit-animation: scale-out-center 0.5s cubic-bezier(0.550, 0.085, 0.680, 0.530) 0.25s both;
+	        animation: scale-out-center 0.5s cubic-bezier(0.550, 0.085, 0.680, 0.530) 0.25s both;
+}
+
+
+
+.cell,
+.choose-mode {
     border-bottom: var(--border-board);
     border-right: var(--border-board);
     display: flex;
@@ -159,13 +224,19 @@ h1 {
 
 .cell:last-child,
 .cell:nth-last-child(2),
-.cell:nth-last-child(3) {
+.cell:nth-last-child(3),
+.choose-mode:last-child,
+.choose-mode:nth-last-child(2),
+.choose-mode:nth-last-child(3) {
     border-bottom: none;
 }
 
 .cell:last-child,
 .cell:nth-child(3),
-.cell:nth-child(6) {
+.cell:nth-child(6),
+.choose-mode:last-child,
+.choose-mode:nth-child(3),
+.choose-mode:nth-child(6) {
     border-right: none;
 }
 

@@ -14,30 +14,32 @@
 
 <body>
     <div class="content">
-    <div class="title-container">
-        <h1 class="title">TIC</h1>
-        <h1 class="title">TAC</h1>
-        <h1 class="title">TOE</h1>
+        <header>
+            <div class="title-container">
+                <h1 class="title">TIC</h1>
+                <h1 class="title">TAC</h1>
+                <h1 class="title">TOE</h1>
+            </div>
+        </header>
+        <div class="board human">
+            <div id="0" class="choose-mode"></div>
+            <div id="1" class="choose-mode"></div>
+            <div id="2" class="choose-mode"></div>
+            <div id="3" class="choose-mode mode-human"></div>
+            <div id="4" class="choose-mode mode-human"></div>
+            <div id="5" class="choose-mode mode-human"></div>
+            <div id="6" class="choose-mode mode-cpu"></div>
+            <div id="7" class="choose-mode mode-cpu"></div>
+            <div id="8" class="choose-mode mode-cpu"></div>
+        </div>
+        <div class="scores hidden">
+            <div class="human-icon"></div>
+            <div class="score" data-index="human">0</div>
+            <div class="score">:</div>
+            <div class="score" data-index="cpu">0</div>
+            <div class=""></div>
+        </div>
     </div>
-    <div class="board human">
-        <div id="0" class="cell"></div>
-        <div id="1" class="cell"></div>
-        <div id="2" class="cell"></div>
-        <div id="3" class="cell"></div>
-        <div id="4" class="cell"></div>
-        <div id="5" class="cell"></div>
-        <div id="6" class="cell"></div>
-        <div id="7" class="cell"></div>
-        <div id="8" class="cell"></div>
-    </div>
-    <div class="scores">
-        <div class="human-icon"></div>
-        <div class="score" data-index="human">0</div>
-        <div class="score">:</div>
-        <div class="score" data-index="cpu">0</div>
-        <div class="cpu-icon"></div>
-    </div>
-</div>
 </body>
 
 </html>
