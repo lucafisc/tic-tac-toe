@@ -23,9 +23,13 @@
         </header>
         <section id="menu">
             <div class="menu">
-               <div class="row"></div>
-               <div class="row"></div>
-               <div class="row"></div>
+               <div id="human-mode" class="row"></div>
+               <div id="cpu-mode" class="row"></div>
+               <div id="select-level" class="row hidden">
+                <button id="easy" value="1" class="level">easy</button>
+                <button id="medium" value="2" class="level">medium</button>
+                <button id="hard" value="3" class="level">hard</button>
+               </div>
             </div>
         </section>
         <section id="gameboard">
@@ -41,15 +45,15 @@
                 <div id="8" class="cell"></div>
             </div>
         </section>
-        <section id="scores">
-            <div class="scores">
+        <footer id="scores">
+            <div class="scores hidden">
                 <div class="human-icon"></div>
                 <div class="score" data-index="human">0</div>
                 <div class="score">:</div>
                 <div class="score" data-index="cpu">0</div>
                 <div class="cpu-icon"></div>
             </div>
-        </section>
+        </footer>
     </div>
 </body>
 

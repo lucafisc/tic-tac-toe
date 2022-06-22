@@ -40,10 +40,10 @@ class ai extends player {
   }
 
   get Move() {
-    if (level === 1) {
+    if (this.level === 1) {
       return randomMove()
     }
-    else if (level === 3) {
+    else if (this.level === 3) {
       return bestMove()
     }
     else {
@@ -61,9 +61,70 @@ class ai extends player {
 const human = new player("human", "x", 0);
 const cpu = new ai("cpu", "o", 0, 1);
 
+const modeMenu = (() => {
+const _humanMode = document.getElementById("human-mode");
+const _cpuMode = document.getElementById("cpu-mode");
+const _levels = document.querySelectorAll(".level");
+const _levelMenu = document.getElementById("select-level");
+const _menu = document.getElementById("menu");
+let _mode;
+let _level;
+
+_humanMode.addEventListener("click", () => {
+  _setMode("human");
+  _startGame();
+})
+_cpuMode.addEventListener("click", () => {
+  _setMode("cpu");
+  _selectLevel();
+})
+for (let choice of _levels) {
+  choice.addEventListener("click", (e) => {
+    cpu.newLevel = e.target.value;
+    _startGame();
+  })
+}
+
+const _setMode = (mode) => {
+  _mode = mode;
+}
+
+const _selectLevel = () => {
+_levelMenu.classList.remove("hidden");
+}
+
+const getMode = () => {
+  return _mode;
+}
+
+const getLevel = () => {
+  return _level;
+}
+
+const _startGame = () => {
+  _menu.classList.add("scale-down-ver-bottom");
+  setTimeout(() => {
+    _menu.classList.add("hidden");
+    gameboard.renderBoard();
+  }, "400")
+}
+
+  return {
+    getMode: getMode,
+
+  }
+})();
+
 const gameboard = (() => {
   let _board = ["", "", "", "", "", "", "", "", ""];
   const _cells = document.querySelectorAll(".cell");
+  const boardDiv = document.querySelector(".board");
+
+  const renderBoard = () => {
+    boardDiv.classList.remove("hidden");
+    boardDiv.classList.add("scale-up-ver-top");
+
+  }
 
   //event listener for cells
   for (let cell of _cells) {
@@ -72,8 +133,9 @@ const gameboard = (() => {
         this.classList.contains("x") ||
         this.classList.contains("o") ||
         gameControl.isThereWinner()
+        // modeMenu.getMode() === "cpu"
       )
-        return; // || gameControl.whoseTurn() === cpu
+        return;
       _render(this, gameControl.whoseTurn().myMarker);
       gameControl.gameRound();
     });
@@ -107,6 +169,7 @@ const gameboard = (() => {
   return {
     getBoard: getBoard,
     endRound: endRound,
+    renderBoard: renderBoard,
   };
 })();
 
