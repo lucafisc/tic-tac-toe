@@ -28,37 +28,71 @@ class ai extends player {
   }
 
   randomMove() {
+    let i;
     do {
-    let i = Math.floor(Math.random() * 9);
+    i = Math.floor(Math.random() * 9);
     }
     while (gameboard.getBoard()[i] !== "")
     return i;
   }
 
   bestMove() {
-
+    let bestScore = -Infinity
+    let boardCopy = gameboard.getBoard();
+    let move;
+    for (let i=0; i<boardCopy.length; i++) {
+      if (boardCopy[i] === "") {
+        boardCopy[i] = this.marker;
+        let score = this.minimax(boardCopy, 0, true);
+        boardCopy[i] = "";
+        console.log(score);
+        if (score > bestScore) {
+          bestScore = score
+          move = i;
+        }
+        // bestScore = min(score, bestScore);
+      }
+    }
+    console.log(move);
+return move;
   }
 
+
+
+  minimax(board, depth, isMaximizing) {
+    return 1;
+  //  if (gameControl.checkWin("o", board, this._winConditions)) {
+  //   return 1
+  //  }
+  //  else if (gameControl.checkDraw(board)) {
+  //   return 0
+  //  }
+  }
+
+
+
+
   get Move() {
-    if (this.level === 1) {
-      return randomMove()
+    if (this.level === "1") {
+      return this.randomMove();
     }
-    else if (this.level === 3) {
-      return bestMove()
+    else if (this.level === "3") {
+      return this.bestMove();
     }
     else {
       let x = Math.floor(Math.random() * 2);
       if (x == 0) {
-        return randomMove()
+        return this.randomMove();
       }
       else {
-        return bestMove()
+        return this.bestMove();
       }
     }
   }
 }
 
 const human = new player("human", "x", 0);
+const human2 = new player("human2", "o", 0);
 const cpu = new ai("cpu", "o", 0, 1);
 
 const modeMenu = (() => {
@@ -132,16 +166,16 @@ const gameboard = (() => {
       if (
         this.classList.contains("x") ||
         this.classList.contains("o") ||
-        gameControl.isThereWinner()
-        // modeMenu.getMode() === "cpu"
+        gameControl.isThereWinner() || 
+        gameControl.whoseTurn() === cpu
       )
         return;
-      _render(this, gameControl.whoseTurn().myMarker);
+      render(this, gameControl.whoseTurn().myMarker);
       gameControl.gameRound();
     });
   }
 
-  const _render = (cell, marker) =>{
+  const render = (cell, marker) =>{
     cell.classList.add(marker);
     _board[cell.id] = marker;
   }
@@ -170,6 +204,7 @@ const gameboard = (() => {
     getBoard: getBoard,
     endRound: endRound,
     renderBoard: renderBoard,
+    render: render,
   };
 })();
 
@@ -193,11 +228,27 @@ const gameControl = (() => {
   ];
 
   const _switchPlayer = () => {
-    _currentPlayer === human
-      ? (_currentPlayer = cpu)
-      : (_currentPlayer = human);
     _boardContainer.classList.toggle("human");
     _boardContainer.classList.toggle("cpu");
+
+    if (modeMenu.getMode() === "human") {
+    _currentPlayer === human
+      ? (_currentPlayer = human2)
+      : (_currentPlayer = human);
+    }
+    else {
+      _currentPlayer === human
+      ? (_currentPlayer = cpu, _cpuPlay())
+      : (_currentPlayer = human);
+    }
+  }
+
+  const _cpuPlay = () => {
+    setTimeout(() => {
+      let move = cpu.Move;
+      gameboard.render(document.getElementById(move), whoseTurn().myMarker);
+      gameRound();
+    }, "1500")
   }
 
   const _updatePoints = (winner) => {
@@ -207,7 +258,7 @@ const gameControl = (() => {
     _cpuScore.textContent = cpu.currentScore;
   }
 
-  const _checkWin = (marker, array, winCondition) => {
+  const checkWin = (marker, array, winCondition) => {
     //check index of markers
     _indexes = [];
     for (let i = 0; i < array.length; i++) {
@@ -215,16 +266,20 @@ const gameControl = (() => {
         _indexes.push(i);
       }
     }
+    console.log(_indexes);
+    console.log(array);
+
     //check if matches winner array
     for (let i = 0; i < winCondition.length; i++) {
       if (winCondition[i].every((j) => _indexes.includes(j))) {
-        _winnerArray = winCondition[i];
-        _winner = true;
+      _winnerArray = winCondition[i];
+      return true;
       }
     }
+    return false;
   }
 
-  const _checkDraw = (array) => {
+  const checkDraw = (array) => {
     return !array.includes("");
   }
 
@@ -233,7 +288,14 @@ const gameControl = (() => {
     gameboard.endRound(_winnerArray);
     _indexes = [];
     _winnerArray = [];
-    _winner = false;
+    _currentPlayer = human;
+    _boardContainer.classList.add("human");
+    _boardContainer.classList.remove("cpu");
+
+    setTimeout(function () {
+      _winner = false
+    }, 3000);
+   
   }
 
   const whoseTurn = () => {
@@ -241,17 +303,18 @@ const gameControl = (() => {
   }
 
   const gameRound = () => {
-    _checkWin(whoseTurn().myMarker, gameboard.getBoard(), _winConditions);
+    _winner = checkWin(whoseTurn().myMarker, gameboard.getBoard(), _winConditions);
     if (isThereWinner()) {
         _updatePoints(_currentPlayer);
       _gameOver();
-    } else if (_checkDraw(gameboard.getBoard())) {
+    } else if (checkDraw(gameboard.getBoard())) {
         _gameOver();
     } else {
       title.animateTurn(_currentPlayer);
       _switchPlayer();
     }
   }
+
 
   const isThereWinner = () => {
     return _winner;
@@ -261,6 +324,8 @@ const gameControl = (() => {
     gameRound: gameRound,
     whoseTurn: whoseTurn,
     isThereWinner: isThereWinner,
+    checkWin: checkWin,
+    checkDraw: checkDraw,
   };
 })();
 
