@@ -182,10 +182,18 @@ const gameboard = (() => {
   let _board = ["", "", "", "", "", "", "", "", ""];
   const _cells = document.querySelectorAll(".cell");
   const boardDiv = document.querySelector(".board");
+  const _enemyIcon = document.getElementById("enemy-icon");
+  const _scoreContainer = document.getElementById("score-container");
 
   const renderBoard = () => {
     boardDiv.classList.remove("hidden");
     boardDiv.classList.add("scale-up-ver-top");
+
+    modeMenu.getMode() === "human" ? (_enemyIcon.classList.add("human-icon")) : (_enemyIcon.classList.add("cpu-icon"));
+    _scoreContainer.classList.add("scores-show");
+
+
+    
   };
 
   //event listener for cells
@@ -211,7 +219,7 @@ const gameboard = (() => {
   const endRound = (winnerArray) => {
     for (let i = 0; i < _cells.length; i++) {
       _cells[i].classList.add("new-round");
-      if (!winnerArray.includes(i)) {
+      if (!winnerArray.includes(i) ) {
         _cells[i].classList.add("grayed");
       }
     }
@@ -404,3 +412,9 @@ const title = (() => {
     animateGameOver: animateGameOver,
   };
 })();
+
+
+//todo
+//fix draw
+//scores
+//footer for font

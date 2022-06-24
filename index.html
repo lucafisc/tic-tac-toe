@@ -15,11 +15,11 @@
 <body>
     <div class="content">
         <header>
-            <div class="title-container">
+            <a class="title-container" href="./index.html">
                 <h1 class="title">TIC</h1>
                 <h1 class="title">TAC</h1>
                 <h1 class="title">TOE</h1>
-            </div>
+            </a>
         </header>
         <section id="menu">
             <div class="menu">
@@ -45,15 +45,13 @@
                 <div id="8" class="cell"></div>
             </div>
         </section>
-        <footer id="scores">
-            <div class="scores hidden">
+            <section id="score-container" class="scores">
                 <div class="human-icon"></div>
                 <div class="score" data-index="human">0</div>
                 <div class="score">:</div>
                 <div class="score" data-index="cpu">0</div>
-                <div class="cpu-icon"></div>
-            </div>
-        </footer>
+                <div id="enemy-icon"></div>
+            </section>
     </div>
 </body>
 
