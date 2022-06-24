@@ -32,6 +32,8 @@
 
 body {
     background-color: var(--background);
+    height: 100vh;
+
 }
 
 .content {
@@ -39,7 +41,6 @@ body {
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
-    height: 100vh;
 }
 
 .hidden {
@@ -386,4 +387,19 @@ h1 {
 
 .cpu-icon::after {
     content: "\f544";
+}
+
+/* footer */
+
+footer {
+    font-family: var(--default-font);
+    font-size: 12px;
+    position: fixed;
+    bottom: 0;
+    padding: 10px;
+}
+
+footer a,
+footer a:visited {
+    color: var(--color-2);
 }
