@@ -39,11 +39,12 @@ class ai extends player {
     let boardCopy = gameboard.getBoard();
     // check if first round
     if (gameControl.getRound() === 1) {
-    if (boardCopy[4] === "") {
-      return 4
+      if (boardCopy[4] === "") {
+        return 4;
+      } else {
+        return 6;
+      }
     }
-    else {return 6}
-  }
 
     let bestScore = -Infinity;
     let move;
@@ -68,8 +69,7 @@ class ai extends player {
     if (gameControl.checkWin(marker, board, gameControl._winConditions)) {
       if (marker === "o") {
         return 1;
-      }
-      else if (marker === "x") {
+      } else if (marker === "x") {
         return -1;
       }
     } else if (gameControl.checkDraw(board)) {
@@ -188,12 +188,10 @@ const gameboard = (() => {
   const renderBoard = () => {
     boardDiv.classList.remove("hidden");
     boardDiv.classList.add("scale-up-ver-top");
-
-    modeMenu.getMode() === "human" ? (_enemyIcon.classList.add("human-icon")) : (_enemyIcon.classList.add("cpu-icon"));
+    modeMenu.getMode() === "human"
+      ? _enemyIcon.classList.add("human-icon")
+      : _enemyIcon.classList.add("cpu-icon");
     _scoreContainer.classList.add("scores-show");
-
-
-    
   };
 
   //event listener for cells
@@ -219,7 +217,7 @@ const gameboard = (() => {
   const endRound = (winnerArray) => {
     for (let i = 0; i < _cells.length; i++) {
       _cells[i].classList.add("new-round");
-      if (!winnerArray.includes(i) ) {
+      if (!gameControl.isThereWinner() || !winnerArray.includes(i)) {
         _cells[i].classList.add("grayed");
       }
     }
@@ -302,8 +300,6 @@ const gameControl = (() => {
         _indexes.push(i);
       }
     }
-    console.log(_indexes);
-    console.log(array);
 
     //check if matches winner array
     for (let i = 0; i < winCondition.length; i++) {
@@ -362,7 +358,7 @@ const gameControl = (() => {
 
   const getRound = () => {
     return _count;
-  }
+  };
 
   return {
     gameRound: gameRound,
@@ -413,8 +409,5 @@ const title = (() => {
   };
 })();
 
-
 //todo
-//fix draw
-//scores
 //footer for font
